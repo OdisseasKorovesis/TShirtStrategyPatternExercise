@@ -5,9 +5,8 @@
  */
 package tshirtstrategy.context;
 
-import tshirtstrategy.models.Color;
-import tshirtstrategy.models.Fabric;
-import tshirtstrategy.models.Size;
+import java.util.HashMap;
+import java.util.List;
 import tshirtstrategy.models.TShirt;
 import tshirtstrategy.strategy.IPayment;
 
@@ -18,12 +17,26 @@ import tshirtstrategy.strategy.IPayment;
 public class Context {
     
     private IPayment payment;
+    private List<IPayment> payments;
 
     public Context(IPayment payment) {
         this.payment = payment;
     }
     
+    public Context(List<IPayment> payments) {
+        this.payments = payments;
+    }
+    
     public float makePayment(TShirt tShirt) {
-        return payment.pay(tShirt.getPrice(), tShirt.getColor(), tShirt.getSize(), tShirt.getFabric());
+        return payment.pay(tShirt.getBasePrice(), tShirt.getColor(), tShirt.getSize(), tShirt.getFabric());
+    }
+    
+    public HashMap<String, Float> makeAllPayments(TShirt tShirt) {
+        HashMap<String, Float> mapOfPayments = new HashMap();
+        for(IPayment payment : this.payments) {            
+            Float finalPrice = payment.pay(tShirt.getBasePrice(), tShirt.getColor(), tShirt.getSize(), tShirt.getFabric());
+            mapOfPayments.put(payment.getClass().getSimpleName(), finalPrice);
+        }        
+       return mapOfPayments;
     }
 }

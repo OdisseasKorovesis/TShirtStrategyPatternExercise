@@ -13,11 +13,11 @@ import tshirtstrategy.models.Size;
  *
  * @author Odisseas KD
  */
-public class BankPaymentImpl extends PaymentImpl implements IPayment {
+public class BankPaymentImpl implements IPayment {
 
     @Override
-    public float pay(float basePrice, Color color, Size size, Fabric fabric) {
-        float result = super.getItemPrice(basePrice, color, size, fabric) * 1.05f;      
+    public float pay(float basePrice, Color color, Size size, Fabric fabric) {              
+        float result = getItemPrice(basePrice, color, size, fabric) * 1.05f;        
         //adding 5% when paying with bank transfer
         return result;
     }

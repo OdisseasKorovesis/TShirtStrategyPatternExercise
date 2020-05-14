@@ -13,12 +13,11 @@ import tshirtstrategy.models.Size;
  *
  * @author Odisseas KD
  */
-public class CardPaymentImpl extends PaymentImpl implements IPayment {
+public class CardPaymentImpl implements IPayment {
 
     @Override
     public float pay(float basePrice, Color color, Size size, Fabric fabric) {
-        float result = super.getItemPrice(basePrice, color, size, fabric) * 1.1f;
-        //adding 10% when paying with credit/debit card
+        float result = getItemPrice(basePrice, color, size, fabric) * 1.1f;
         return result;
     }
     

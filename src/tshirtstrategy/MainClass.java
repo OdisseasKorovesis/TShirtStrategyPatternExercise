@@ -1,7 +1,13 @@
-
 package tshirtstrategy;
 
-
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import tshirtstrategy.context.Context;
 import tshirtstrategy.models.Color;
 import tshirtstrategy.models.Fabric;
@@ -10,29 +16,60 @@ import tshirtstrategy.models.TShirt;
 import tshirtstrategy.strategy.BankPaymentImpl;
 import tshirtstrategy.strategy.CardPaymentImpl;
 import tshirtstrategy.strategy.CashPaymentImpl;
-
+import tshirtstrategy.strategy.IPayment;
 
 public class MainClass {
 
     private static Context context;
-    
+
     public static void main(String[] args) {
-        TShirt tShirt = new TShirt("Polo", Color.ORANGE, Size.XL, Fabric.LINEN, 15);
+        HashMap<String, Float> allPayments = new HashMap();
+        IPayment[] p = new IPayment[]{new CardPaymentImpl(), new BankPaymentImpl(), new CashPaymentImpl()};
+        List<IPayment> payments = Arrays.asList(p);
+        allPossiblePrices(allPayments, p, payments);
         
-        context = new Context(new CardPaymentImpl());
-        float cardPrice = context.makePayment(tShirt);
-        context = new Context(new BankPaymentImpl());
-        float bankPrice = context.makePayment(tShirt);
-        context = new Context(new CashPaymentImpl());
-        float cashPrice = context.makePayment(tShirt);
-        
-        printPrices(tShirt, cardPrice, bankPrice, cashPrice);        
+    }
+
+    public static void printPrices(TShirt tShirt, HashMap<String, Float> allPayments) {
+        System.out.printf("For tshirt No. %s pricing is as follows \n", tShirt.getName());
+        System.out.println("(" + tShirt.toString() + ")");
+        for (String key : allPayments.keySet()) {
+            System.out.println(key.replace("Impl", "") + " " + allPayments.get(key));
+        }
+    }
+
+    public static void createCatalog(TShirt tShirt, HashMap<String, Float> allPayments) {
+        try {
+            File myCatalog = new File("C:\\Users\\Odisseas KD\\Desktop\\Coding\\catalog.txt");
+            PrintWriter pw = new PrintWriter(new FileWriter(myCatalog, true));
+            pw.printf("For tshirt No. %s pricing is as follows \n", tShirt.getName());
+            pw.println("(" + tShirt.toString() + ")");
+            for (String key : allPayments.keySet()) {
+                pw.println(key.replace("Impl", "") + " " + allPayments.get(key));               
+            }
+            pw.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
-    public static void printPrices(TShirt tShirt, float cardPrice, float bankPrice, float cashPrice) {
-        System.out.printf("For %s tshirt pricing is as follows \n", tShirt.getName());
-        System.out.printf("1. Card price: %20f \n", cardPrice);
-        System.out.printf("2. Bank transfer price: %11f \n", bankPrice);
-        System.out.printf("3. Cash price: %20f \n", cashPrice);
-    }   
+    public static void allPossiblePrices(HashMap<String, Float> allPayments, IPayment[] p, List<IPayment> payments) {
+        TShirt tshirt = new TShirt();
+        int counter = 1;
+        for (Color color : Color.values()) {
+            tshirt.setColor(color);
+            for (Size size : Size.values()) {
+                tshirt.setSize(size);
+                for (Fabric fabric : Fabric.values()) {
+                    tshirt.setFabric(fabric);
+                    tshirt.setName(String.valueOf(counter));
+                    Context context2 = new Context(payments);
+                    allPayments = context2.makeAllPayments(tshirt);
+                    printPrices(tshirt, allPayments);
+                    createCatalog(tshirt, allPayments);
+                    counter++;
+                }
+            }
+        }
+    }
 }

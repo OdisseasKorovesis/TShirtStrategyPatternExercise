@@ -17,7 +17,8 @@ public class TShirt {
     private Color color;
     private Size size;
     private Fabric fabric;
-    private float price = 10;
+    private float basePrice = 10.0f;
+    private float price;
 
     public TShirt() {
     }
@@ -27,7 +28,7 @@ public class TShirt {
         this.color = color;
         this.size = size;
         this.fabric = fabric;
-        this.price = price;
+        setPrice(price);
     }
 
     public Fabric getFabric() {
@@ -49,13 +50,19 @@ public class TShirt {
     public float getPrice() {
         return price;
     }
-
-    //base price = 10
-    //setPrice(22.75)
-    //totalPrice = 10 + 22.75
+    
     public void setPrice(float price) {
-        this.price += price;
+        this.price = this.basePrice + price;
     }
+
+    public float getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(float basePrice) {
+        this.basePrice = basePrice;
+    }   
+    
 
     public Color getColor() {
         return color;
@@ -116,7 +123,7 @@ public class TShirt {
 
     @Override
     public String toString() {
-        return "TShirt{" + "name=" + name + ", price=" + price + ", color=" + color + ", size=" + size + ", fabric=" + fabric + '}';
+        return "Attributes: Color=" + color + ", Size=" + size + ", Fabric=" + fabric;
     }
 
 }

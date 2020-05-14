@@ -13,11 +13,11 @@ import tshirtstrategy.models.Size;
  *
  * @author Odisseas KD
  */
-public class CashPaymentImpl extends PaymentImpl implements IPayment  {
+public class CashPaymentImpl implements IPayment  {
 
     @Override
-    public float pay(float basePrice, Color color, Size size, Fabric fabric) {
-        float result = super.getItemPrice(basePrice, color, size, fabric);
+    public float pay(float basePrice, Color color, Size size, Fabric fabric) {        
+        float result = getItemPrice(basePrice, color, size, fabric);
         //no additional price when paying with cash
         return result;
     }

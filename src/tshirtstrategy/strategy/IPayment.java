@@ -16,4 +16,12 @@ import tshirtstrategy.models.TShirt;
  */
 public interface IPayment {
     float pay(float basePrice, Color color, Size size, Fabric fabric);
+    
+    default float getItemPrice(float basePrice, Color color, Size size, Fabric fabric) {
+        float result = basePrice;
+        result += color.getColorPrice2(color.ordinal());
+        result += size.getSizePrice2(size.ordinal());
+        result += fabric.getFabricPrice2(fabric.ordinal());
+        return result;
+    }
 }
