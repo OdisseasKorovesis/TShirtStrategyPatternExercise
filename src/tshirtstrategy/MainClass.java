@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import tshirtstrategy.context.Context;
 import tshirtstrategy.models.Color;
 import tshirtstrategy.models.Fabric;
@@ -23,10 +23,8 @@ public class MainClass {
     private static Context context;
 
     public static void main(String[] args) {
-        HashMap<String, Float> allPayments = new HashMap();
-        IPayment[] p = new IPayment[]{new CardPaymentImpl(), new BankPaymentImpl(), new CashPaymentImpl()};
-        List<IPayment> payments = Arrays.asList(p);
-        allPossiblePrices(allPayments, p, payments);
+        
+        HashMap<String, Float> allPayments = allPossiblePrices();
         
     }
 
@@ -53,7 +51,10 @@ public class MainClass {
         }
     }
     
-    public static void allPossiblePrices(HashMap<String, Float> allPayments, IPayment[] p, List<IPayment> payments) {
+    public static HashMap<String, Float> allPossiblePrices() {
+        HashMap<String, Float> allPayments = new HashMap();
+        IPayment[] p = new IPayment[]{new CardPaymentImpl(), new BankPaymentImpl(), new CashPaymentImpl()};
+        List<IPayment> payments = Arrays.asList(p);
         TShirt tshirt = new TShirt();
         int counter = 1;
         for (Color color : Color.values()) {
@@ -63,13 +64,14 @@ public class MainClass {
                 for (Fabric fabric : Fabric.values()) {
                     tshirt.setFabric(fabric);
                     tshirt.setName(String.valueOf(counter));
-                    Context context2 = new Context(payments);
-                    allPayments = context2.makeAllPayments(tshirt);
+                    Context context = new Context(payments);
+                    allPayments = context.makeAllPayments(tshirt);
                     printPrices(tshirt, allPayments);
                     createCatalog(tshirt, allPayments);
                     counter++;
                 }
             }
         }
-    }
+        return allPayments;
+    }    
 }

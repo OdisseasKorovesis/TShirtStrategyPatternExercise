@@ -26,6 +26,7 @@ public enum Color {
     
     
     //first way of calculating added price based on color
+    //currently not used
     public float getColorPrice(int ordinal) {        
         float result = 0;
         switch (ordinal) {
@@ -57,13 +58,8 @@ public enum Color {
     //second way of calculating added price based on color
     //might prove useful if list of colors has many elements
     public float getColorPrice2(int ordinal) {
-        Color[] colors = Color.values();
-        float result = 0;
-        for(Color color : colors) {
-            if(ordinal == color.ordinal()) {
-                result += color.getAddedPrice();
-            }
-        }
+        Color color = Color.values()[ordinal];        
+        float result = color.getAddedPrice();
         return result;
     }
 
