@@ -59,7 +59,7 @@ public enum Color {
     //might prove useful if list of colors has many elements
     public float getColorPrice2(int ordinal) {
         Color color = Color.values()[ordinal];        
-        float result = color.getAddedPrice();
+        float result = color.getAddedPrice();        
         return result;
     }
 

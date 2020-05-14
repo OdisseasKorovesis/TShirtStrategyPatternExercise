@@ -59,8 +59,8 @@ public enum Size {
     //second way of calculating added price based on size
     //might prove useful if list of sizes has many elements
     public float getSizePrice2(int ordinal) {
-        Fabric fabric = Fabric.values()[ordinal];        
-        float result = fabric.getAddedPrice();
+        Size size = Size.values()[ordinal];        
+        float result = size.getAddedPrice();        
         return result;
     }
 }

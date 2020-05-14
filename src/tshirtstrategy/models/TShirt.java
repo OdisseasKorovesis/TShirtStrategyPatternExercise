@@ -123,7 +123,7 @@ public class TShirt {
 
     @Override
     public String toString() {
-        return "Attributes: Color=" + color + ", Size=" + size + ", Fabric=" + fabric;
+        return "Characteristics: Color=" + color + ", Size=" + size + ", Fabric=" + fabric;
     }
 
 }
