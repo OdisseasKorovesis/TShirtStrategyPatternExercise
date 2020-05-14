@@ -24,7 +24,7 @@ public class MainClass {
 
     public static void main(String[] args) {
         
-        HashMap<String, Float> allPayments = allPossiblePrices();
+        allPossiblePrices();
         
     }
 
